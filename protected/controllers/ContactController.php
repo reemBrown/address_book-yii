@@ -2,39 +2,35 @@
 
 class ContactController extends Controller
 {
-	public function actions()
+	public function actionIndex()
 	{
+		$this->render('index');
+	}
+
+	// Uncomment the following methods and override them if needed
+	/*
+	public function filters()
+	{
+		// return the filter configuration for this controller, e.g.:
 		return array(
-			// captcha action renders the CAPTCHA image displayed on the contact page
-			'captcha'=>array(
-				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFFFF,
-			),
-			// page action renders "static" pages stored under 'protected/views/site/pages'
-			// They can be accessed via: index.php?r=site/page&view=FileName
-			'page'=>array(
-				'class'=>'CViewAction',
+			'inlineFilterName',
+			array(
+				'class'=>'path.to.FilterClass',
+				'propertyName'=>'propertyValue',
 			),
 		);
 	}
 
-	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
-	 */
-	public function actionIndex()
+	public function actions()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		// return external action classes, e.g.:
+		return array(
+			'action1'=>'path.to.ActionClass',
+			'action2'=>array(
+				'class'=>'path.to.AnotherActionClass',
+				'propertyName'=>'propertyValue',
+			),
+		);
 	}
-	public function actionSearch(){
-		$this->render('search');
-	}
-
-	public function actionAdd(){
-		$this->render('add');
-	}
-
-
+	*/
 }

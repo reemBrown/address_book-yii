@@ -106,8 +106,4 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
-	
-	public function actionSpeak($message = "default message") { 
-		return $this->render("speak",['message' => $message]); 
-	} 
 }

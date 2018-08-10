@@ -1,42 +1,13 @@
 <?php
-/* @var $this SiteController */
+/* @var $this ContactController */
 
-$this->pageTitle="home";
+$this->breadcrumbs=array(
+	'Contact',
+);
 ?>
-<?php 
-   use yii\helpers\Html; 
-?> 
-<div class="row">
-	<div >
-  		<button type="button" class="btn btn-success">
-  			<h2>
-  				<?php echo CHtml::link('+',array('contact/add')); ?>
-  			
-  			</h2>
-  		</button>
-	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<?php $contact = Yii::app()->db->createCommand()
-		->select('photo')
-        ->from('contacts')
-        ->where('id=:id', array(':id'=>1))
-        ->queryRow(); 
-        echo $contact['photo'];?>
-	<div >
-  		<form class="form-search">
- 			<div class="input-append">
-    			<input type="text" >
-    			<button type="submit" class="btn">Search</button>
-			</div>
-		</form>
-    </div>
-</div>
+<h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 
-
-
-
+<p>
+	You may change the content of this page by modifying
+	the file <tt><?php echo __FILE__; ?></tt>.
+</p>
