@@ -4,38 +4,48 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
+    <?php
+    $cs = Yii::app()->clientScript;
+    $themePath = Yii::app()->theme->baseUrl;
 
-    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
+    /**
+     * StyleSHeets
+     */
+    $cs
+        ->registerCssFile($themePath.'/assets/css/bootstrap.css')
+        ->registerCssFile($themePath.'/assets/css/bootstrap-theme.css');
+
+    /**
+     * JavaScripts
+     */
+    $cs
+        ->registerCoreScript('jquery',CClientScript::POS_END)
+        ->registerCoreScript('jquery.ui',CClientScript::POS_END)
+        ->registerScriptFile($themePath.'/assets/js/bootstrap.min.js',CClientScript::POS_END)
+
+        ->registerScript('tooltip',
+            "$('[data-toggle=\"tooltip\"]').tooltip();
+            $('[data-toggle=\"popover\"]').tooltip()"
+            ,CClientScript::POS_READY);
+
+    ?>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="<?php echo Yii::app()->theme->baseUrl ?>/assets/js/html5shiv.js"></script>
+        <script src="<?php echo Yii::app()->theme->baseUrl ?>/assets/js/respond.min.js"></script>
+    <![endif]--> 
+
+
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
-	<?php Yii::app()->bootstrap->register(); ?>
 </head>
 
 <body>
 
-<!-- <?php $this->widget('bootstrap.widgets.TbNavbar',array(
-    'items'=>array(
-        array(
-            'class'=>'bootstrap.widgets.TbMenu',
-            'items'=>array(
-                array('label'=>'cxxx', 'url'=>array('/site/index')),
-                array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-                array('label'=>'Contact', 'url'=>array('/site/contact')),
-                array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-                array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-            ),
-        ),
-    ),
-)); ?> -->
 
 <div class="container" id="page">
 
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
 
 	<?php echo $content; ?>
 

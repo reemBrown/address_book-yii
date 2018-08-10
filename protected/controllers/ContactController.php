@@ -28,5 +28,13 @@ class ContactController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
 	}
+	public function actionSearch(){
+		$this->render('search');
+	}
+
+	public function actionAdd(){
+		$this->render('add');
+	}
+
 
 }

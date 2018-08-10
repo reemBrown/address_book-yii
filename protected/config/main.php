@@ -2,7 +2,7 @@
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
-Yii::setPathOfAlias('bootstrap', dirname(dirname(__FILE__)).'/extensions/bootstrap');
+Yii::setPathOfAlias('bootstrap', dirname(dirname(__FILE__)).'/modules/bootstrap');
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
@@ -18,28 +18,32 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-	),
-	
+        'bootstrap.*',
+        'bootstrap.components.*',
+        'bootstrap.behaviours.*',
+        'bootstrap.helpers.*',
+        'bootstrap.widgets.*'
+    ),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 		
-		'gii'=>array(
-			'generatorPaths'=>array(
-				'bootstrap.gii',
-			),
-			'class'=>'system.gii.GiiModule',
-			'password'=>'Enter Your Password Here',
-			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			'ipFilters'=>array('127.0.0.1','::1'),
-		),
+		// 'gii'=>array(
+		// 	'generatorPaths'=>array(
+		// 		'bootstrap.gii',
+		// 	),
+		// 	'class'=>'system.gii.GiiModule',
+		// 	'password'=>'Enter Your Password Here',
+		// 	// If removed, Gii defaults to localhost only. Edit carefully to taste.
+		// 	'ipFilters'=>array('127.0.0.1','::1'),
+		// ),
 		
 	),
 
 	// application components
 	'components'=>array(
 		'bootstrap'=>array(
-			'class'=>'bootstrap.components.Bootstrap',
+			'class'=>'bootstrap.components.BsApi',
 			
 		),
 
