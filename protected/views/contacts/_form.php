@@ -1,64 +1,43 @@
-<?php
-/* @var $this ContactsController */
-/* @var $model Contacts */
-/* @var $form CActiveForm */
-?>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'contacts-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
+	'htmlOptions' => array(
+		'enctype' => 'multipart/form-data',
+	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-		<?php echo $form->error($model,'id'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>45)); ?>
+
+	<?php echo $form->textFieldRow($model,'phone',array('class'=>'span5','maxlength'=>45)); ?>
+
+	<?php echo $form->textFieldRow($model,'locationx',array('class'=>'span5','maxlength'=>45)); ?>
+
+	<?php echo $form->textFieldRow($model,'locationy',array('class'=>'span5','maxlength'=>45)); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'name'); ?>
-	</div>
+		<div class="span5 ">
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'phone'); ?>
-		<?php echo $form->textField($model,'phone',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'phone'); ?>
-	</div>
+			<?php echo $form->labelEx($model,'photo'); ?>
+			<?php echo CHtml::activeFileField($model, 'photo'); ?>  
+			<?php echo $form->error($model,'photo'); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'locationx'); ?>
-		<?php echo $form->textField($model,'locationx',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'locationx'); ?>
+		</div>
 	</div>
+	<br>
+	<?php if($model->isNewRecord!='1'){ ?>
+		<?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.$model->photo,"image",array("width"=>200)); ?>  
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'locationy'); ?>
-		<?php echo $form->textField($model,'locationy',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'locationy'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'photo'); ?>
-		<?php echo $form->textField($model,'photo',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'photo'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<?php } ?>
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->

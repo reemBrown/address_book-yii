@@ -1,31 +1,67 @@
 <?php
-/* @var $this ContactsController */
-/* @var $model Contacts */
-
 $this->breadcrumbs=array(
-	'Contacts'=>array('index'),
-	$model->name,
+	'view contact',
 );
 
-$this->menu=array(
-	array('label'=>'List Contacts', 'url'=>array('index')),
-	array('label'=>'Create Contacts', 'url'=>array('create')),
-	array('label'=>'Update Contacts', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Contacts', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Contacts', 'url'=>array('admin')),
-);
 ?>
 
-<h1>View Contacts #<?php echo $model->id; ?></h1>
+<br>
+		<div class="span7 well" style="background-color: #d4d4d445;">
+            <div class="row">
+            	<div align="right">
+            		<h4>
+        			<?php	echo CHtml::link("<i class='fas fa-user-edit '></i>",array('update','id'=>$model->id)); ?>
+        			<?php	echo CHtml::link("<i class='fas fa-trash-alt' style='color: firebrick;'></i>",array('delete()','id'=>$model->id),array('confirm' => 'Are you sure you want delete '.$model->name.'?')); ?>
+        			</h4>
+        		</div>
+        		<div class="span2 ">
+        			
+					<?php echo "<img src='images/".CHtml::encode($model->photo)."'border='5' style=' border-radius: 50%; ' alt='your-photo'>";?>
+        		</div>
+        		<div class="span4" style="padding-top: 50px; font-size: 18px;">
+        			<p><strong>Name: </strong>&ensp;&ensp;<?php echo $model->name;?> </p>
+                  	<p><strong>Phone:</strong>&ensp;&ensp;<?php echo $model->phone;?></p>
+        			
+        		</div>
+        	</div>
+        	<br>
+        	<?php if(!empty($model->locationx) && !empty($model->locationx)){?>
+          	<div id="map" ></div>
+         <?php }?>
+        </div>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'name',
-		'phone',
-		'locationx',
-		'locationy',
-		'photo',
-	),
-)); ?>
+
+    <style>
+      
+      #map {
+      	position: relative;
+    	overflow: overlay;
+    	border-style: ridge;
+	    height: 400px;
+    	width: 100%;
+      }
+      
+    </style>
+
+
+
+    <script>
+
+      function initMap() { 
+        var myLatLng = {lat: <?php echo $model->locationx;?>, lng: <?php echo $model->locationy;?>};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDOflNwhCqZLhaUlWNe7sIJScvuREpLLE&callback=initMap">
+    </script>

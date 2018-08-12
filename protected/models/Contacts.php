@@ -29,11 +29,13 @@ class Contacts extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id', 'numerical', 'integerOnly'=>true),
-			array('name, phone, locationx, locationy, photo', 'length', 'max'=>45),
+			array('name, phone, locationx, locationy', 'length', 'max'=>45),
+			array('name','required'),
+			array('phone','required'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, phone, locationx, locationy, photo', 'safe', 'on'=>'search'),
+			array('name, phone, locationx, locationy', 'safe', 'on'=>'search'),
+			array('photo', 'file','types'=>'jpg, png', 'allowEmpty'=>true, 'on'=>'insert'), 
 		);
 	}
 

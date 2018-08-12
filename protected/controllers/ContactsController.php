@@ -15,7 +15,6 @@ class ContactsController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -24,26 +23,26 @@ class ContactsController extends Controller
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+	// public function accessRules()
+	// {
+	// 	return array(
+	// 		array('allow',  // allow all users to perform 'index' and 'view' actions
+	// 			'actions'=>array('index','view'),
+	// 			'users'=>array('*'),
+	// 		),
+	// 		array('allow', // allow authenticated user to perform 'create' and 'update' actions
+	// 			'actions'=>array('create','update'),
+	// 			'users'=>array('@'),
+	// 		),
+	// 		array('allow', // allow admin user to perform 'admin' and 'delete' actions
+	// 			'actions'=>array('admin','delete'),
+	// 			'users'=>array('admin'),
+	// 		),
+	// 		array('deny',  // deny all users
+	// 			'users'=>array('*'),
+	// 		),
+	// 	);
+	// }
 
 	/**
 	 * Displays a particular model.
@@ -68,10 +67,18 @@ class ContactsController extends Controller
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contacts']))
-		{
+		{	
+			//TO-DO:generate a unique image prefix to prevent duplicate image name
+			$rnd = rand(0,99999);
 			$model->attributes=$_POST['Contacts'];
-			if($model->save())
+			$uploadedFile=CUploadedFile::getInstance($model,'photo');
+			$fileName = "{$rnd}-{$uploadedFile}";  
+			$model->photo = $fileName;
+
+			if($model->save()){
+				$uploadedFile->saveAs(Yii::app()->basePath.'/../images/'.$fileName);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(
@@ -93,9 +100,17 @@ class ContactsController extends Controller
 
 		if(isset($_POST['Contacts']))
 		{
+			$_POST['Contacts']['photo']=$model->photo;
 			$model->attributes=$_POST['Contacts'];
-			if($model->save())
+			$uploadedFile=CUploadedFile::getInstance($model,'photo');
+
+
+			if($model->save()){
+				if(!empty($uploadedFile)){
+					$uploadedFile->saveAs(Yii::app()->basePath.'/../images/'.$model->photo);
+				}
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('update',array(
@@ -110,22 +125,44 @@ class ContactsController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
-	{
+	{	
 		$dataProvider=new CActiveDataProvider('Contacts');
+		
+		if(isset($_POST['searchName']))
+	     { 
+	 
+	       echo "works";
+	       Yii::app()->end();
+	     }
+
+   
+
+		$models =$dataProvider->getData();
 		$this->render('index',array(
+			'models'=>$models,
 			'dataProvider'=>$dataProvider,
 		));
+
+		
+
+			
 	}
 
 	/**
@@ -146,9 +183,7 @@ class ContactsController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return Contacts the loaded model
-	 * @throws CHttpException
+	 * @param integer the ID of the model to be loaded
 	 */
 	public function loadModel($id)
 	{
@@ -160,7 +195,7 @@ class ContactsController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Contacts $model the model to be validated
+	 * @param CModel the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
