@@ -10,13 +10,21 @@ $this->breadcrumbs=array(
             <div class="row">
             	<div align="right">
             		<h4>
+
         			<?php	echo CHtml::link("<i class='fas fa-user-edit '></i>",array('update','id'=>$model->id)); ?>
-        			<?php	echo CHtml::link("<i class='fas fa-trash-alt' style='color: firebrick;'></i>",array('delete()','id'=>$model->id),array('confirm' => 'Are you sure you want delete '.$model->name.'?')); ?>
+        			&ensp;&ensp;
+        			<?php	echo CHtml::link("<i class='fas fa-trash-alt' style='color: firebrick;'></i>",'#',array('submit'=>array('contacts/delete','id'=>$model->id),'confirm' => 'Are you sure you want delete '.$model->name.'?')); ?>
+        			
         			</h4>
         		</div>
         		<div class="span2 ">
-        			
-					<?php echo "<img src='images/".CHtml::encode($model->photo)."'border='5' style=' border-radius: 50%; ' alt='your-photo'>";?>
+        			<?php if(!empty($model->photo)){
+						echo "<img src='images/".CHtml::encode($model->photo)."'border='5' style=' border-radius: 50%; ' >";
+					}
+					else {
+						echo "<img src='images/default.png'border='5' style=' border-radius: 50%; ' >";
+					}
+					?>
         		</div>
         		<div class="span4" style="padding-top: 50px; font-size: 18px;">
         			<p><strong>Name: </strong>&ensp;&ensp;<?php echo $model->name;?> </p>

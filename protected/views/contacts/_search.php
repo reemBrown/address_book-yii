@@ -3,17 +3,7 @@
 	'method'=>'get',
 )); ?>
 
-	<?php echo $form->textFieldRow($model,'id',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>45)); ?>
-
-	<?php echo $form->textFieldRow($model,'phone',array('class'=>'span5','maxlength'=>45)); ?>
-
-	<?php echo $form->textFieldRow($model,'locationx',array('class'=>'span5','maxlength'=>45)); ?>
-
-	<?php echo $form->textFieldRow($model,'locationy',array('class'=>'span5','maxlength'=>45)); ?>
-
-	<?php echo $form->textFieldRow($model,'photo',array('class'=>'span5','maxlength'=>45)); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

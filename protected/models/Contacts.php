@@ -30,10 +30,15 @@ class Contacts extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, phone, locationx, locationy', 'length', 'max'=>45),
+			array('locationx','checkLocationY'),
+			array('locationy','checkLocationX'),
 			array('name','required'),
 			array('phone','required'),
+			
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
+			array('locationx, locationy','numerical'),
 			array('name, phone, locationx, locationy', 'safe', 'on'=>'search'),
 			array('photo', 'file','types'=>'jpg, png', 'allowEmpty'=>true, 'on'=>'insert'), 
 		);
@@ -104,5 +109,17 @@ class Contacts extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	public function checkLocationX($attributes,$params)
+	{
+	  if(empty($this->locationx) && !empty($this->locationy) ){
+	         $this->addError('locationx','You have to enter location X');
+	  }  
+	}
+	public function checkLocationY($attributes,$params)
+	{
+	  if(!empty($this->locationx) && empty($this->locationy) ){
+	         $this->addError('locationy','You have to enter location Y');
+	  } 
 	}
 }

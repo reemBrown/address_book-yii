@@ -28,10 +28,15 @@
 		</div>
 	</div>
 	<br>
-	<?php if($model->isNewRecord!='1'){ ?>
-		<?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.$model->photo,"image",array("width"=>200)); ?>  
+	<?php if( $model->isNewRecord != '1' && !empty($model->photo) ){ 
+		echo CHtml::checkBox('photoCheckbox', false, array("id"=>"photoCheckbox" , "onchange"=>'hidePhoto()'));?>
+		Remove photo
+		<br>
+		
+		<?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/'.$model->photo,"image",array("width"=>200,"id"=>"contactPhoto")); ?>  
 
 	<?php } ?>
+	
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
@@ -41,3 +46,22 @@
 	</div>
 
 <?php $this->endWidget(); ?>
+
+<script>
+function hidePhoto() {
+  
+  var checkBox = document.getElementById("photoCheckbox");
+  
+  if (checkBox.checked == true){
+    document.getElementById("contactPhoto").style.display = "none" ;
+  } 
+  else{
+  	document.getElementById("contactPhoto").style.display = "block";  ;
+  }
+}
+</script>
+<style>
+#contactPhoto {
+	padding-top: 10px;
+}
+</style>

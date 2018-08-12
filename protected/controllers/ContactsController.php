@@ -72,11 +72,16 @@ class ContactsController extends Controller
 			$rnd = rand(0,99999);
 			$model->attributes=$_POST['Contacts'];
 			$uploadedFile=CUploadedFile::getInstance($model,'photo');
-			$fileName = "{$rnd}-{$uploadedFile}";  
+			$fileName = "{$rnd}-{$uploadedFile}"; 
+			if(strlen($fileName) > 40){
+				$fileName=substr($fileName, 0,40);
+			}
 			$model->photo = $fileName;
 
 			if($model->save()){
-				$uploadedFile->saveAs(Yii::app()->basePath.'/../images/'.$fileName);
+				if(!empty($uploadedFile)){
+					$uploadedFile->saveAs(Yii::app()->basePath.'/../images/'.$fileName);
+				}
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
@@ -99,11 +104,27 @@ class ContactsController extends Controller
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Contacts']))
-		{
-			$_POST['Contacts']['photo']=$model->photo;
-			$model->attributes=$_POST['Contacts'];
+		{	
 			$uploadedFile=CUploadedFile::getInstance($model,'photo');
 
+			if( empty($model->photo) && !empty($uploadedFile)){
+
+				$rnd = rand(0,99999);
+				$fileName = "{$rnd}-{$uploadedFile}"; 
+				if(strlen($fileName) > 40){
+					$fileName=substr($fileName, 0,40);
+				}
+				$model->photo = $fileName;
+			
+			}
+			
+			if(isset($_POST['photoCheckbox']) && !empty($_POST['photoCheckbox'])){
+				$model->photo=null;
+			}
+			
+			$_POST['Contacts']['photo']=$model->photo;
+			$model->attributes=$_POST['Contacts'];
+		
 
 			if($model->save()){
 				if(!empty($uploadedFile)){
@@ -120,7 +141,7 @@ class ContactsController extends Controller
 
 	/**
 	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * If deletion is successful, the browser will be redirected to the 'index' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
@@ -132,7 +153,7 @@ class ContactsController extends Controller
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
@@ -144,20 +165,25 @@ class ContactsController extends Controller
 	public function actionIndex()
 	{	
 		$dataProvider=new CActiveDataProvider('Contacts');
+     	$searchName=null;
 		
 		if(isset($_POST['searchName']))
-	     { 
-	 
-	       echo "works";
-	       Yii::app()->end();
-	     }
+     	{ 
+     		$searchName=$_POST['searchName'];
+ 		  	$criteria = new CDbCriteria();
+ 		  	$criteria->compare('name',$_POST['searchName'],true);
+			$data = Contacts::model()->findAll($criteria);
+			$dataProvider->setData($data);
 
-   
+       	}
+       	
 
-		$models =$dataProvider->getData();
+		$models= $dataProvider->getData();
+
 		$this->render('index',array(
 			'models'=>$models,
 			'dataProvider'=>$dataProvider,
+			'searchName'=>$searchName,
 		));
 
 		
