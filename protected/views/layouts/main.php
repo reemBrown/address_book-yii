@@ -5,12 +5,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 
-    <?php
-    /*<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />*/
-
-    	// echo dirname(dirname(dirname(__FILE__))).'';die;
-    	// echo Yii::app()->Bootstrap->registerCoreScript();
-    ?>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>

@@ -66,7 +66,7 @@ $this->breadcrumbs=array(
         var marker = new google.maps.Marker({
           position: myLatLng,
           map: map,
-          title: 'Hello World!'
+          title: '<?php echo $model->name;?>'
         });
       }
     </script>
